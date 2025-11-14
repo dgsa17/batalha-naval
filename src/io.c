@@ -23,7 +23,7 @@ void readNickname(char *buf, int size){
         fgets(buf, size, stdin);
         buf[strcspn(buf, "\n")] = '\0';
 
-    } while (strlen(buf) == 0);  // só isso já basta
+    } while (strlen(buf) == 0);  
 }
 
 int readBoardSize(){
