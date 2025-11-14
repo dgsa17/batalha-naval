@@ -68,19 +68,19 @@ void readCoordinate(const char *prompt, int *r, int *c){
         fgets(buf, sizeof(buf), stdin);
         buf[strcspn(buf, "\n")] = '\0';
 
-        // valida mínimo
+  
         if (strlen(buf) < 2) 
             continue;
 
-        // valida letra
+       
         if (!isalpha(buf[0]))
             continue;
 
-        // converte letra
+        
         char letra = toupper(buf[0]);
         int col = letra - 'A';
 
-        // valida parte numérica
+        
         int valido = 1;
         for (int i = 1; buf[i]; i++) {
             if (!isdigit(buf[i])) valido = 0;
