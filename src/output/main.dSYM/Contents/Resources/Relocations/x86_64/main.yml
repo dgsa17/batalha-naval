@@ -1,0 +1,5 @@
+---
+triple:          'x86_64-apple-darwin'
+binary-path:     '/Users/pedro/Desktop/Projetos/batalha-naval/src/output/main'
+relocations:     []
+...
