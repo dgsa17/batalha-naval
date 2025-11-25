@@ -1,10 +1,7 @@
 #ifndef BOARD_H
 #define BOARD_H
-
 #include <stdbool.h>
 
-// O estado de uma célula no tabuleiro.
-// Usar para marcar erros, acertos e verificar navios.
 typedef enum {
     CELL_WATER,
     CELL_SHIP,

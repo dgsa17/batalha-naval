@@ -22,7 +22,7 @@ void initFleet(Fleet *f) {
     }
 }
 
-//verjfjca se o navio vai caber na posição
+//verifica se o navio vai caber na posição
 bool canPlaceShip(Board *b, int r, int c, int size, bool horizontal) {
 
     //verifica se as células estão dentro dos limites
@@ -32,7 +32,7 @@ bool canPlaceShip(Board *b, int r, int c, int size, bool horizontal) {
         if (r + size > b->rows) return false;
     }
 
-    // verifica se há colisão com outros navios
+    //verifica se houve colisão com outros navios
     for (int i = 0; i < size; i++) {
         int rr = horizontal ? r : r + i;
         int cc = horizontal ? c + i : c;
@@ -45,7 +45,7 @@ bool canPlaceShip(Board *b, int r, int c, int size, bool horizontal) {
     return true;
 }
 
-//posiciona o navio no tabueleiro
+//coloca o navio no tabuleiro
 void placeShip(Board *b, Fleet *f, int ship_id, int r, int c, bool horizontal) {
 
     int size = f->ships[ship_id].size;
@@ -68,6 +68,15 @@ void registerHit(Fleet *f, int ship_id) {
 
     if (s->hits == s->size) {
         s->sunk = true;
-        printf("Navio de tamanho %d AFUNDOU!\n", s->size);
+        
     }
+}
+
+// verifica se todos os navios foram destruídos
+bool allShipsDestroyed(Fleet *f) {
+    for (int i = 0; i < f->count; i++) {
+        if (!f->ships[i].sunk)
+            return false;
+    }
+    return true;
 }
