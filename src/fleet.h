@@ -1,17 +1,19 @@
 #ifndef FLEET_H
 #define FLEET_H
+
 #include <stdbool.h>
-#include "board.h"
+
+typedef struct Board Board;
 
 typedef struct {
-    int size;      // tamanho do navio
-    int hits;      // quantas partes foram atingidas
-    bool sunk;     // true se afundou
+    int size;
+    int hits;
+    bool sunk;
 } Ship;
 
 typedef struct {
-    Ship *ships;   // vetor de navios
-    int count;     // quantidade de navios
+    Ship *ships;
+    int count;
 } Fleet;
 
 void initFleet(Fleet *f);
