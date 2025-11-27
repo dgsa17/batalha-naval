@@ -1,27 +1,14 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef GAME_H 
+#define GAME_H 
 
-#include <stdbool.h>
-#include "board.h"
-#include "fleet.h"
+#include <stdbool.h> 
+#include "board.h" 
+#include "fleet.h" 
 #include "io.h"
 
-typedef struct {
-    char nickname[32];
-    Board board;
-    Board shots;
-    Fleet fleet;
-} Player;
-
-typedef struct {
-    Player p1, p2;
-    int current_player;
-    int game_over;
-} Game;
-
-void initGame(Game *g);
-void startGame(Game *g);
-void doTurn(Game *g);
-bool checkVictory(Game *g);
+void initGame(Game *g); 
+void startGame(Game *g); 
+void doTurn(Game *g); 
+bool checkVictory(Game *g); 
 
 #endif
