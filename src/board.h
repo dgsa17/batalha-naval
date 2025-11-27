@@ -3,16 +3,8 @@
 
 #include <stdbool.h>
 
-typedef struct {
-    int size;
-    int hits;
-    bool sunk;
-} Ship;
-
-typedef struct {
-    Ship *ships;
-    int count;
-} Fleet;
+struct Fleet;          
+typedef struct Fleet Fleet;
 
 typedef enum {
     CELL_WATER,
