@@ -2,6 +2,11 @@
 #define GAME_H
 
 #include <stdbool.h>
+
+typedef struct Game Game;    
+typedef struct Board Board;
+typedef struct Fleet Fleet;
+
 #include "board.h"
 #include "fleet.h"
 #include "io.h"
