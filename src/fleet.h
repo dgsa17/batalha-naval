@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-struct Board;  // forward declaration
+struct Board;    
 typedef struct Board Board;
 
 typedef struct {
