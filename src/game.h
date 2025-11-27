@@ -2,14 +2,22 @@
 #define GAME_H
 
 #include <stdbool.h>
-
-typedef struct Game Game;    
-typedef struct Board Board;
-typedef struct Fleet Fleet;
-
 #include "board.h"
 #include "fleet.h"
 #include "io.h"
+
+typedef struct {
+    char nickname[32];
+    Board board;
+    Board shots;
+    Fleet fleet;
+} Player;
+
+typedef struct {
+    Player p1, p2;
+    int current_player;
+    int game_over;
+} Game;
 
 void initGame(Game *g);
 void startGame(Game *g);
