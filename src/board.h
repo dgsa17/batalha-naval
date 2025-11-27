@@ -1,33 +1,30 @@
-#ifndef BOARD_H
+#ifndef BOARD_H 
 #define BOARD_H
 
-#include <stdbool.h>
+#include <stdbool.h> 
+#include "fleet.h" 
+typedef enum { 
+CELL_WATER, 
+CELL_SHIP, 
+CELL_HIT, 
+CELL_MISS
+} CellState; 
 
-struct Fleet;          
-typedef struct Fleet Fleet;
+typedef struct { 
+CellState state; 
+int ship_id; 
+} Cell; 
 
-typedef enum {
-    CELL_WATER,
-    CELL_SHIP,
-    CELL_HIT,
-    CELL_MISS
-} CellState;
-
-typedef struct {
-    CellState state;
-    int ship_id;
-} Cell;
-
-typedef struct Board {
-    int rows, cols;
-    Cell *cells;
-} Board;
+typedef struct { 
+int rows, cols; 
+Cell *cells; 
+} Board; 
 
 void initBoard(Board *b, int rows, int cols);
-int inBounds(Board *b, int r, int c);
-Cell *getCell(Board *b, int r, int c);
-int shootCell(Board *target, Board *shots, Fleet *fleet, int r, int c);
-void printBoard(Board *b, bool showShips);
-void freeBoard(Board *b);
+int inBounds(Board *b, int r, int c); 
+int shootCell(Board *target, Board *shots, Fleet *fleet, int r, int c); 
+Cell *getCell(Board *b, int r, int c); 
+void printBoard(Board *b, bool showShips); 
+void freeBoard(Board *b); 
 
 #endif
