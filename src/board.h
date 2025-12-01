@@ -2,7 +2,7 @@
 #define BOARD_H
 
 #include <stdbool.h> 
-#include "fleet.h" 
+
 typedef enum { 
 CELL_WATER, 
 CELL_SHIP, 
@@ -22,7 +22,6 @@ Cell *cells;
 
 void initBoard(Board *b, int rows, int cols);
 int inBounds(Board *b, int r, int c); 
-int shootCell(Board *target, Board *shots, Fleet *fleet, int r, int c); 
 Cell *getCell(Board *b, int r, int c); 
 void printBoard(Board *b, bool showShips); 
 void freeBoard(Board *b); 

@@ -2,7 +2,8 @@
 #define FLEET_H 
 
 #include <stdbool.h> 
-#include "board.h" 
+#include "board.h"
+
 typedef struct { 
 int size; // tamanho do navio 
 int hits; // quantas partes foram atingidas 
@@ -19,5 +20,6 @@ bool allShipsDestroyed(Fleet *f);
 bool canPlaceShip(Board *b, int r, int c, int size, bool horizontal); 
 void placeShip(Board *b, Fleet *f, int ship_id, int r, int c, bool horizontal); 
 void registerHit(Fleet *f, int ship_id);
+int shootCell(Board *target, Board *shots, Fleet *fleet, int r, int c);
 
 #endif

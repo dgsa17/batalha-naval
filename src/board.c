@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "board.h"
-#include "fleet.h"
 
 //verifica se o tamanho do tabuleiro é válido
 void initBoard(Board *b, int rows, int cols) {
@@ -72,41 +71,3 @@ void freeBoard(Board *b) {
         b->cells = NULL;
     }
 }
-
-//tiro
-int shootCell(Board *target, Board *shots, Fleet *fleet, int r, int c) {
-
-    Cell *alvo = getCell(target, r, c);
-    Cell *tiro = getCell(shots, r, c);
-
-    // segurança
-    if (!alvo || !tiro) {
-        printf("Coordenada inválida! Escolha uma posição dentro do tabueleiro.\n");
-        return 0;
-    }
-
-    // se já atirou nessa posição
-    if (tiro->state == CELL_HIT || tiro->state == CELL_MISS) {
-        printf("Coordenazda iválida! Você já atirou nesse lugar.\n");
-        return 0;
-    }
-
-    // se acertou um navio
-    if (alvo->state == CELL_SHIP) {
-        alvo->state = CELL_HIT;
-        tiro->state = CELL_HIT;
-
-        int id = alvo->ship_id;
-        registerHit(fleet, id);
-
-        if (fleet->ships[id].sunk)
-            return 2;   // afundou
-
-        return 1;       // apenas acertou
-    }
-
-    // se errou
-    tiro->state = CELL_MISS;
-    return 0;
-}
-

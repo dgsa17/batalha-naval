@@ -4,7 +4,7 @@
 #include "board.h"
 
 void initFleet(Fleet *f) {
-    f->count = 4; //tipos de navios
+    f->count = 6; //tipos de navios: 1x5, 1x4, 2x3, 2x2
 
     f->ships = malloc(f->count * sizeof(Ship));
     if (!f->ships) {
@@ -12,8 +12,8 @@ void initFleet(Fleet *f) {
         exit(1);
     }
 
-    //tamanhos dos navios
-    int sizes[] = {5, 4, 3, 2};
+    //tamanhos dos navios: 1x5, 1x4, 2x3, 2x2
+    int sizes[] = {5, 4, 3, 3, 2, 2};
 
     for (int i = 0; i < f->count; i++) {
         f->ships[i].size = sizes[i];
@@ -79,4 +79,41 @@ bool allShipsDestroyed(Fleet *f) {
             return false;
     }
     return true;
+}
+
+//tiro
+int shootCell(Board *target, Board *shots, Fleet *fleet, int r, int c) {
+
+    Cell *alvo = getCell(target, r, c);
+    Cell *tiro = getCell(shots, r, c);
+
+    // segurança
+    if (!alvo || !tiro) {
+        printf("Coordenada inválida! Escolha uma posição dentro do tabuleiro.\n");
+        return 0;
+    }
+
+    // se já atirou nessa posição
+    if (tiro->state == CELL_HIT || tiro->state == CELL_MISS) {
+        printf("Coordenada inválida! Você já atirou nesse lugar.\n");
+        return -1;
+    }
+
+    // se acertou um navio
+    if (alvo->state == CELL_SHIP) {
+        alvo->state = CELL_HIT;
+        tiro->state = CELL_HIT;
+
+        int id = alvo->ship_id;
+        registerHit(fleet, id);
+
+        if (fleet->ships[id].sunk)
+            return 2;   // afundou
+
+        return 1;       // apenas acertou
+    }
+
+    // se errou
+    tiro->state = CELL_MISS;
+    return 0;
 }

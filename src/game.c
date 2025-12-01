@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "game.h"
+#include "board.h"
+#include "fleet.h"
+#include "io.h"
 
 // Inicializa a estrutura Game
 void initGame(Game *g){
@@ -68,18 +71,38 @@ void doTurn(Game *g){
 
     printf("\n-- Turno de %s --\n", atual->nickname);
 
+    printf("\nSeu Tabuleiro de Tiros:\n");
+    printBoard(&atual->shots, false); // Tabuleiro de tiros (mostra acertos/erros)
+
+    printf("\nSeu Tabuleiro de Navios:\n");
+    printBoard(&atual->board, true); // Tabuleiro de navios (mostra seus navios)
+
     int r, c;
-    readCoordinate("Digite coordenada: ", &r, &c);
+    
+    while (1) {
+        readCoordinate("Digite coordenada: ", &r, &c);
 
-    // Checa se o tiro é válido no tabuleiro
-    if (!inBounds(&alvo->board, r, c)){
-        printf("Coordenada fora do tabuleiro!\n");
-        return;
+        // Checa se o tiro é válido no tabuleiro
+        if (!inBounds(&alvo->board, r, c)){
+            printf("Coordenada fora do tabuleiro!\n");
+            continue;
+        }
+
+        int result = shootCell(&alvo->board, &atual->shots, &alvo->fleet, r, c);
+        
+        // Se result for 0 e for por coordenada inválida (já atirou), continua pedindo
+        if (result == -1) {
+            continue;
+        }
+
+        showResultMessage(result);
+        
+        // Exibe o tabuleiro de tiros após o resultado
+        printf("\nSeu Tabuleiro de Tiros Atualizado:\n");
+        printBoard(&atual->shots, false);
+        
+        break;
     }
-
-    int result = shootCell(&alvo->board, &atual->shots, &alvo->fleet, r, c);
-
-    showResultMessage(result);
 }
 
 
@@ -97,4 +120,53 @@ bool checkVictory(Game *g){
     }
 
     return false;
+}
+
+// Posicionamento manual de navios
+void placeFleetManual(Board *b, Fleet *f, const char *nickname) {
+    printf("\n=== Posicionamento de navios para %s ===\n", nickname);
+    
+    // A frota tem 6 navios: 1x5, 1x4, 2x3, 2x2
+    const char *ship_names[] = {"Porta-aviões (5)", "Encouraçado (4)", "Cruzador (3)", "Cruzador (3)", "Destroyer (2)", "Destroyer (2)"};
+    
+    for (int id = 0; id < f->count; id++) {
+        int size = f->ships[id].size;
+        printf("\nPosicionando %s\n", ship_names[id]);
+        
+        while (1) {
+            printBoard(b, true);
+            
+            int r, c;
+            char orientation;
+            
+            readCoordinate("Digite a coordenada inicial: ", &r, &c);
+            
+            printf("Orientação (H)orizontal ou (V)ertical)? ");
+            char buf[8];
+            fgets(buf, sizeof(buf), stdin);
+            orientation = toupper(buf[0]);
+            
+            if (orientation != 'H' && orientation != 'V') {
+                printf("Orientação inválida! Use H ou V.\n");
+                continue;
+            }
+            
+            bool horizontal = (orientation == 'H');
+            
+            if (canPlaceShip(b, r, c, size, horizontal)) {
+                placeShip(b, f, id, r, c, horizontal);
+                printf("Navio posicionado com sucesso!\n");
+                break;
+            } else {
+                printf("Não é possível posicionar o navio nessa posição. Tente novamente.\n");
+            }
+        }
+    }
+    
+    printf("\nTodos os navios foram posicionados!\n");
+    printBoard(b, true);
+    printf("Pressione Enter para continuar...");
+    // Limpa o buffer de entrada para o próximo getchar
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
 }
