@@ -141,3 +141,22 @@ void showResultMessage(int hit){
             printf("Resultado desconhecido.\n");
     }
 }
+
+// Implementação da função readConfig
+void readConfig(GameConfig *cfg) {
+    printf("\n=== CONFIGURAÇÕES DO JOGO ===\n");
+
+    // 1. Tamanho do Tabuleiro
+    printf("Tamanho atual do tabuleiro: %d\n", cfg->board_size);
+    cfg->board_size = readBoardSize();
+
+    // 2. Modo de Posicionamento
+    printf("Modo de posicionamento atual: %c (%s)\n", 
+           cfg->placement_mode, 
+           (cfg->placement_mode == 'A' ? "Automático" : "Manual"));
+    
+    printf("Deseja mudar o modo de posicionamento? (A)utomático ou (M)anual: ");
+    cfg->placement_mode = readPlacementMode();
+
+    printf("\nConfigurações salvas!\n");
+}

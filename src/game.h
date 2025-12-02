@@ -4,7 +4,7 @@
 #include <stdbool.h> 
 #include "board.h"
 #include "fleet.h"
-#include "io.h"
+
 
 // Definições de estruturas
 typedef struct {
@@ -21,8 +21,15 @@ typedef struct {
     int game_over;
 } Game;
 
-void initGame(Game *g); 
-void startGame(Game *g); 
+// Estrutura para configurações
+typedef struct {
+    int board_size;
+    char placement_mode; // 'A' para automático, 'M' para manual
+} GameConfig;
+
+// Funções do jogo
+void initGame(Game *g, GameConfig *cfg); 
+void startGame(Game *g, GameConfig *cfg); 
 void doTurn(Game *g); 
 bool checkVictory(Game *g); 
 

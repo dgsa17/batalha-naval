@@ -9,8 +9,11 @@
 int main() {
 
     int opcao;
-
-    initRandom(); // inicializa do módulo rnd
+    Game g;
+    // Configuração padrão: 10x10, Auto
+    GameConfig cfg = {10, 'A'}; 
+    
+    initRandom();
 
     while (1) { // Loop
 
@@ -18,10 +21,10 @@ int main() {
 
         if (opcao == 1) {  
             // NOVO JOGO
-            Game g;
-
-            initGame(&g);
-            startGame(&g);
+            
+            // Inicializa o jogo com as configurações atuais
+            initGame(&g, &cfg);
+            startGame(&g, &cfg);
 
             // Libera memória no final
             freeBoard(&g.p1.board);
@@ -34,7 +37,7 @@ int main() {
 
         } else if (opcao == 2) {
             // CONFIGURAÇÕES 
-            printf("Configurações ainda não implementadas.\n");
+            readConfig(&cfg);
 
         } else if (opcao == 3) {
             printf("Saindo...\n");

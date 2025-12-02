@@ -6,7 +6,7 @@
 #include "io.h"
 
 // Inicializa a estrutura Game
-void initGame(Game *g){
+void initGame(Game *g, GameConfig *cfg){
     g->current_player = 0;
     g->game_over = 0;
 
@@ -16,22 +16,24 @@ void initGame(Game *g){
     printf("Jogador 2:\n");
     readNickname(g->p2.nickname, 32);
 
-    // Tamanho
-    int size = readBoardSize();
+    // Inicializa tabuleiros com o tamanho da configuração
+    initBoard(&g->p1.board, cfg->board_size, cfg->board_size);
+    initBoard(&g->p2.board, cfg->board_size, cfg->board_size);
 
-    // Inicializa tabuleiros
-    initBoard(&g->p1.board, size, size);
-    initBoard(&g->p2.board, size, size);
-
-    initBoard(&g->p1.shots, size, size);
-    initBoard(&g->p2.shots, size, size);
+    initBoard(&g->p1.shots, cfg->board_size, cfg->board_size);
+    initBoard(&g->p2.shots, cfg->board_size, cfg->board_size);
 
     // Inicializa frotas
     initFleet(&g->p1.fleet);
     initFleet(&g->p2.fleet);
+}
+
+
+// Loop principal do jogo
+void startGame(Game *g, GameConfig *cfg){
 
     // Posicionamento
-    char mode = readPlacementMode();
+    char mode = cfg->placement_mode;
     if (mode == 'A' || mode == 'a'){
         placeFleetAuto(&g->p1.board, &g->p1.fleet);
         placeFleetAuto(&g->p2.board, &g->p2.fleet);
@@ -39,11 +41,6 @@ void initGame(Game *g){
         placeFleetManual(&g->p1.board, &g->p1.fleet, g->p1.nickname);
         placeFleetManual(&g->p2.board, &g->p2.fleet, g->p2.nickname);
     }
-}
-
-
-// Loop principal do jogo
-void startGame(Game *g){
 
     while (!g->game_over){
 
